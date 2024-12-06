@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-service
+  labels:
+    app: authentication-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: authentication-service
+  template:
+    metadata:
+      labels:
+        app: authentication-service
+    spec:
+      containers:
+        - name: authentication-service
+          image: your-docker-repo/springboot-jwt:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentication-service
+spec:
+  selector:
+    app: authentication-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
