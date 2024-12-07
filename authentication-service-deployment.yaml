@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-service
+  labels:
+    app: authentication-service
+spec:
+  replicas: 3  # Number of replicas for high availability
+  selector:
+    matchLabels:
+      app: authentication-service
+  template:
+    metadata:
+      labels:
+        app: authentication-service
+    spec:
+      containers:
+        - name: authentication-service
+          image: amindenizer/sample-test-auth:latest  # Docker image from Docker Hub
+          ports:
+            - containerPort: 8081  # Port exposed by the container
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"  # Active Spring profile
+          resources:
+            requests:
+              memory: "256Mi"  # Minimum memory required
+              cpu: "500m"  # Minimum CPU required
+            limits:
+              memory: "512Mi"  # Maximum memory allowed
+              cpu: "1"  # Maximum CPU allowed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentication-service
+spec:
+  selector:
+    app: authentication-service  # Matches pods with the same label
+  ports:
+    - protocol: TCP
+      port: 80  # External port for accessing the service
+      targetPort: 8081  # Internal port the service forwards requests to
+  type: LoadBalancer  # Makes the service accessible outside the cluster
