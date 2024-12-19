@@ -1,69 +1,93 @@
-# پروژه احراز هویت JWT با Spring Security
 
-## توضیحات پروژه
+# JWT Authentication Project with Spring Security
 
-این پروژه یک سیستم احراز هویت با استفاده از Spring Security است که امکان احراز هویت کاربران را از طریق مقادیر ثابت فراهم می‌کند.
+## Project Description
 
-آدرس دسترسی به سیستم: [http://localhost:8081/home/user](http://localhost:8081/home/user)
+This project is an authentication system using Spring Security that enables user authentication through predefined static values.
 
----
-
-## پیش‌نیازها
-
-- **JDK 11** یا بالاتر
-- **Maven** برای مدیریت وابستگی‌ها
+Access the system at: [http://localhost:8081/home/user](http://localhost:8081/home/user)
 
 ---
 
-## مراحل راه‌اندازی پروژه
+## Prerequisites
 
-### 1. کلون کردن پروژه
+- **JDK 11** or higher
+- **Maven** for dependency management
+- **Minikube** and **kubectl** for Kubernetes setup
 
-ابتدا پروژه را از گیت دریافت کنید:
+---
+
+## Steps to Set Up the Project
+
+### 1. Clone the Project
+
+First, clone the project from the repository:
 ```bash
 git clone https://github.com/AminDenizer/Auth.git
 ```
 
-### 2. تنظیمات فایل `application.properties`
+### 2. Configure the `application.properties` File
 
-در فایل `application.properties` اطلاعات زیر را وارد کنید:
+Enter the following details in the `application.properties` file:
 ```properties
 server.port=8081
 spring.security.user.name=Amin
 spring.security.user.password=Denizer
 ```
 
-### 3. اجرای پروژه
+### 3. Run the Project Locally
 
-برای اجرای پروژه از دستور زیر استفاده کنید:
+Use the following command to run the project:
 ```bash
 mvn spring-boot:run
 ```
 
-پروژه روی پورت 8081 اجرا خواهد شد و از طریق لینک زیر در دسترس خواهد بود:
+The project will run on port 8081 and will be accessible via the link below:
 [http://localhost:8081/home/user](http://localhost:8081/home/user)
 
 ---
 
-## روش‌های احراز هویت
+## Running the Project with Docker
 
-### احراز هویت با مقادیر ثابت
+To run the project using Docker, you can use the following image:
 
-با مقادیر پیش‌فرض تعریف شده در `application.properties`:
-
-- **نام کاربری:** `Amin`
-- **رمز عبور:** `Denizer`
-
-
-## ایمیج داکر
-
-برای اجرای پروژه با استفاده از داکر، می‌توانید از ایمیج زیر استفاده کنید:
-
-[لینک ایمیج داکر](https://hub.docker.com/layers/amindenizer/sample-test-auth/latest/images/sha256-d35ec07656008da702334d02efbb2bb15dee7336e9d6e1adeb3f5bf77e4d465e?context=repo)
+[Docker Image Link](https://hub.docker.com/layers/amindenizer/sample-test-auth/latest/images/sha256-d35ec07656008da702334d02efbb2bb15dee7336e9d6e1adeb3f5bf77e4d465e?context=repo)
 
 ```bash
 docker pull amindenizer/sample-test-auth:latest
 docker run -p 8081:8081 amindenizer/sample-test-auth:latest
 ```
 
+---
 
+## Deploying on Kubernetes with Minikube
+
+Follow these steps to deploy the project on a Kubernetes cluster using Minikube:
+
+1. Start Minikube:
+   ```bash
+   minikube start
+   ```
+
+2. Apply the deployment configuration:
+   ```bash
+   kubectl apply -f authentication-service-deployment.yaml
+   ```
+
+3. Verify that the pods are running:
+   ```bash
+   kubectl get pods
+   ```
+
+4. Check the service details:
+   ```bash
+   kubectl describe svc authentication-service
+   ```
+
+5. Forward the service to access it locally:
+   ```bash
+   kubectl port-forward svc/authentication-service 8081:80
+   ```
+
+The application will now be accessible at:
+[http://localhost:8081/home/user](http://localhost:8081/home/user)
